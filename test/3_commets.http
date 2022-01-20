@@ -1,0 +1,69 @@
+@host = http://localhost:9999
+
+### Логинимся как пользователь Umed
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "Umed@alif.tj",
+    "password":"123456"
+}
+
+@Token={{login.response.body.token}}
+
+
+### Добавляем коментарий 
+POST {{host}}/tweets/2/comments
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "content": "Первый коммент"
+}
+
+### Добавляем коментарий 
+POST {{host}}/tweets/2/comments
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "content": "Второй коммент"
+}
+
+### Получаем коментарии
+GET {{host}}/tweets/2/comments
+Authorization: {{Token}}
+
+
+### Получаем коментарий по ID
+GET {{host}}/comments/1
+Authorization: {{Token}}
+
+
+### Изменяем коментрий
+PUT {{host}}/comments
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "content": "Первый измененный комментарий"
+}
+
+### Удаляем комментарий по ID
+DELETE {{host}}/comments/2
+Authorization: {{Token}}
+
+### Лайкаем комментарий
+POST {{host}}/comments/1/like
+Authorization: {{Token}}
+
+
+
+### Список пользователей кто лайкнул комментарий
+GET {{host}}/comments/1/liked_users
+Authorization: {{Token}}
+
+
+

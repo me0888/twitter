@@ -1,0 +1,73 @@
+@host = http://localhost:9999
+
+
+### Создание 1-го нового пользователья User1
+POST  {{host}}/users
+Content-Type: application/json
+
+{
+    "email": "User1@alif.tj",
+    "username": "User1",
+    "password":"123"
+}
+
+### Создание 2-го нового пользователья User2
+POST  {{host}}/users
+Content-Type: application/json
+
+{
+    "email": "User2@alif.tj",
+    "username": "User2",
+    "password":"123"
+}
+
+### Логинимся как пользователь User1
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "User1@alif.tj",
+    "password":"123"
+}
+
+@Token={{login.response.body.token}}
+
+
+### Изменяем данные пользователья User1 на Umed
+PUT {{host}}/user
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "email": "Umed@alif.tj",
+    "username": "Umed",
+    "password":"123456"
+}
+
+### Получение текущего пользователья
+GET {{host}}/user
+Authorization: {{Token}}
+
+### Ищем пользователей
+GET {{host}}/users?search=U
+Authorization: {{Token}}
+
+### Подписаться на 2-го пользователья
+POST {{host}}/users/User2/follow
+Authorization: {{Token}}
+
+
+
+### Подписчики пользователья Umed
+GET {{host}}/users/Umed/followers
+Authorization: {{Token}}
+
+### Подписчики пользователья User2
+GET {{host}}/users/User2/followers
+Authorization: {{Token}}
+
+
+### Список тех на кого подписан пользователь Umed
+GET {{host}}/users/Umed/followees
+Authorization: {{Token}}

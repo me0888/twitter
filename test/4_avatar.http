@@ -1,0 +1,57 @@
+@host = http://localhost:9999
+
+### Логин пользователья
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "Umed@alif.tj",
+    "password":"123456"
+}
+
+@Token1={{login.response.body.token}}
+
+### Обновляем аватар пользователья
+POST {{host}}/avatar
+Content-Type: multipart/form-data; boundary=----MyBoundary
+Authorization: {{Token1}}
+
+------MyBoundary
+Content-Disposition: form-data; name = "avatar"; filename = "6.png"
+Content-Type: image/png
+
+< ./6.png
+------MyBoundary--
+
+### Получаем аватар пользователья
+GET {{host}}/avatar
+Authorization: {{Token1}}
+
+### Логин пользователья
+# @name login2
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "User2@alif.tj",
+    "password":"123"
+}
+
+@Token2={{login2.response.body.token}}
+
+### Обновляем аватар пользователья
+POST {{host}}/avatar
+Content-Type: multipart/form-data; boundary=----MyBoundary
+Authorization: {{Token2}}
+
+------MyBoundary
+Content-Disposition: form-data; name = "avatar"; filename = "8.png"
+Content-Type: image/png
+
+< ./8.png
+------MyBoundary--
+
+### Получаем аватар пользователья
+GET {{host}}/avatar
+Authorization: {{Token2}}

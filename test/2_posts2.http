@@ -1,0 +1,79 @@
+@host = http://localhost:9999
+
+### Логинимся как пользователь User2
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "User2@alif.tj",
+    "password":"123"
+}
+
+@Token={{login.response.body.token}}
+
+### Постим второй твит User2
+POST {{host}}/tweets
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "content": "Второй твит"
+}
+
+### Постим третий твит User2
+POST {{host}}/tweets
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "content": "Третий твит"
+}
+
+### Постим четвертый твит User2
+POST {{host}}/tweets
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "content": "Четвертый твит"
+}
+
+### Посты пользователья User2
+GET {{host}}/users/User2/tweets
+Authorization: {{Token}}
+
+### Получаем твит по ID (твит Umed-а)
+GET {{host}}/tweets/2
+Authorization: {{Token}}
+
+### Изменение твита User2
+PUT {{host}}/tweets
+Authorization: {{Token}}
+Content-Type: application/json
+
+{
+    "id": 2,
+    "content": "Второй измененный твит User2"
+}
+
+### Удаление 4-ый твит User2
+DELETE {{host}}/tweets/4
+Authorization: {{Token}}
+
+### Лайкаем твит Umed-а
+POST {{host}}/tweets/1/like
+Authorization: {{Token}}
+
+
+### Список лайкнувших твит Umed-а
+GET {{host}}/tweets/1/liked_users
+Authorization: {{Token}}
+
+### Ретвитим твит Umed-а
+POST {{host}}/tweets/1/retweet
+Authorization: {{Token}}
+
+### Список пользователей ретвитнувших Umed-а
+GET {{host}}/tweets/1/retweeted_users
+Authorization: {{Token}}

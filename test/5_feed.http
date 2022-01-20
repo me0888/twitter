@@ -1,0 +1,59 @@
+@host = http://localhost:9999
+
+### Логинимся как Umed
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "Umed@alif.tj",
+    "password":"123456"
+}
+
+@Token={{login.response.body.token}}
+
+### Логинимся как User2
+# @name login2
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "email": "User2@alif.tj",
+    "password":"123"
+}
+
+@Token2={{login2.response.body.token}}
+
+### Список тех на кого подписан пользователь Umed
+GET {{host}}/users/Umed/followees
+Authorization: {{Token}}
+
+
+### Ретвитим твит Umed-а
+POST {{host}}/tweets/1/retweet
+Authorization: {{Token2}}
+
+### Читаем ленту
+GET {{host}}/feed
+Authorization: {{Token}}
+
+
+
+### Список тех на кого подписан пользователь User2
+GET {{host}}/users/User2/followees
+Authorization: {{Token2}}
+
+### Подписаться на пользователья Umed
+POST {{host}}/users/Umed/follow
+Authorization: {{Token2}}
+
+
+### Ретвитим твит User2-а
+POST {{host}}/tweets/2/retweet
+Authorization: {{Token}}
+
+
+
+### Читаем ленту
+GET {{host}}/feed
+Authorization: {{Token2}}
